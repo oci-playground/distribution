@@ -20,7 +20,7 @@ import "github.com/opencontainers/image-spec/specs-go"
 type Manifest struct {
 	specs.Versioned
 
-	// MediaType specificies the type of this document data structure e.g. `application/vnd.oci.image.manifest.v1+json`
+	// MediaType specifies the type of this document data structure e.g. `application/vnd.oci.image.manifest.v1+json`
 	MediaType string `json:"mediaType,omitempty"`
 
 	// Config references a configuration object for a container, by digest.
@@ -32,4 +32,7 @@ type Manifest struct {
 
 	// Annotations contains arbitrary metadata for the image manifest.
 	Annotations map[string]string `json:"annotations,omitempty"`
+
+	// Reference links a manifest to another existing manifest.
+	Reference Descriptor `json:"reference,omitempty"`
 }
