@@ -6,6 +6,7 @@ import (
 
 	"github.com/distribution/distribution/v3"
 	dcontext "github.com/distribution/distribution/v3/context"
+	"github.com/distribution/distribution/v3/manifest/ocischema"
 	"github.com/distribution/distribution/v3/registry/extension"
 	"github.com/distribution/distribution/v3/registry/storage/driver"
 	"github.com/opencontainers/go-digest"
@@ -43,12 +44,13 @@ func (h *referrersHandler) Referrers(ctx context.Context, revision digest.Digest
 		if err != nil {
 			return err
 		}
-
-		_, ok := man.(*DeserializedManifest)
-		//fmt.Printf("Artifact type requested %s", artifact.ArtifactType())
-
-		if !ok {
-			// The PUT handler would guard against this situation. Skip this manifest.
+		// need to handle artifact manifest and oci manifest
+		var annotations map[string]string
+		if m, ok := man.(*DeserializedManifest); ok {
+			annotations = m.inner.Annotations
+		} else if m, ok := man.(*ocischema.DeserializedManifest); ok {
+			annotations = m.Annotations
+		} else {
 			return nil
 		}
 
@@ -58,11 +60,10 @@ func (h *referrersHandler) Referrers(ctx context.Context, revision digest.Digest
 		}
 		desc.MediaType, _, _ = man.Payload()
 		referrers = append(referrers, v1.Descriptor{
-			MediaType: desc.MediaType,
-			Size:      desc.Size,
-			Digest:    desc.Digest,
-			//Todo: annontate artifactType
-			//ArtifactType: ArtifactMan.ArtifactType(),
+			MediaType:   desc.MediaType,
+			Size:        desc.Size,
+			Digest:      desc.Digest,
+			Annotations: annotations,
 		})
 		return nil
 	})

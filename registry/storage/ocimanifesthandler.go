@@ -4,20 +4,24 @@ import (
 	"context"
 	"fmt"
 	"net/url"
+	"path"
+	"reflect"
 
 	"github.com/distribution/distribution/v3"
 	dcontext "github.com/distribution/distribution/v3/context"
 	"github.com/distribution/distribution/v3/manifest/ocischema"
+	"github.com/distribution/distribution/v3/registry/storage/driver"
 	"github.com/opencontainers/go-digest"
 	v1 "github.com/opencontainers/image-spec/specs-go/v1"
 )
 
 //ocischemaManifestHandler is a ManifestHandler that covers ocischema manifests.
 type ocischemaManifestHandler struct {
-	repository   distribution.Repository
-	blobStore    distribution.BlobStore
-	ctx          context.Context
-	manifestURLs manifestURLs
+	repository    distribution.Repository
+	blobStore     distribution.BlobStore
+	ctx           context.Context
+	manifestURLs  manifestURLs
+	storageDriver driver.StorageDriver
 }
 
 var _ ManifestHandler = &ocischemaManifestHandler{}
@@ -54,6 +58,15 @@ func (ms *ocischemaManifestHandler) Put(ctx context.Context, manifest distributi
 	if err != nil {
 		dcontext.GetLogger(ctx).Errorf("error putting payload into blobstore: %v", err)
 		return "", err
+	}
+
+	if !reflect.DeepEqual(m.Reference, v1.Descriptor{}) {
+		// add link file here if Reference field isn't empty
+		err = ms.indexReferrers(ctx, m, revision.Digest)
+		if err != nil {
+			dcontext.GetLogger(ctx).Errorf("error indexing referrers: %v", err)
+			return "", err
+		}
 	}
 
 	return revision.Digest, nil
@@ -140,4 +153,23 @@ func (ms *ocischemaManifestHandler) verifyManifest(ctx context.Context, mnfst oc
 	}
 
 	return nil
+}
+
+// indexReferrers indexes the subject of the given revision in its referrers index store.
+func (ms *ocischemaManifestHandler) indexReferrers(ctx context.Context, dm *ocischema.DeserializedManifest, revision digest.Digest) error {
+	// [TODO] We can use artifact type in the link path to support filtering by artifact type
+	//  but need to consider the max path length in different os
+	subjectRevision := dm.Reference.Digest
+
+	rootPath := path.Join(referrersLinkPath(ms.repository.Named().Name()), subjectRevision.Algorithm().String(), subjectRevision.Hex())
+	referenceLinkPath := path.Join(rootPath, revision.Algorithm().String(), revision.Hex(), "link")
+	if err := ms.storageDriver.PutContent(ctx, referenceLinkPath, []byte(revision.String())); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func referrersLinkPath(name string) string {
+	return path.Join("/docker/registry/", "v2", "repositories", name, "_refs", "subjects")
 }
