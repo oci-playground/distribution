@@ -43,10 +43,6 @@ func (h *referrersHandler) getReferrers(w http.ResponseWriter, r *http.Request) 
 		referrers = []v1.Descriptor{}
 	}
 
-	// response := referrersResponse{
-	// 	Referrers: referrers,
-	// }
-
 	response := v1.Index{
 		Versioned: specs.Versioned{
 			SchemaVersion: 2,
@@ -55,8 +51,9 @@ func (h *referrersHandler) getReferrers(w http.ResponseWriter, r *http.Request) 
 		Annotations: map[string]string{},
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	//w.Header().Set("OCI-Api-Version", "oci/2.0")
+	// set Content-Type header to be OCI index media type (manifest list)
+	w.Header().Set("Content-Type", v1.MediaTypeImageIndex)
+
 	enc := json.NewEncoder(w)
 	if err = enc.Encode(response); err != nil {
 		h.extContext.Errors = append(h.extContext.Errors, errcode.ErrorCodeUnknown.WithDetail(err))

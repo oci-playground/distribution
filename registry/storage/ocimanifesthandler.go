@@ -157,8 +157,6 @@ func (ms *ocischemaManifestHandler) verifyManifest(ctx context.Context, mnfst oc
 
 // indexReferrers indexes the subject of the given revision in its referrers index store.
 func (ms *ocischemaManifestHandler) indexReferrers(ctx context.Context, dm *ocischema.DeserializedManifest, revision digest.Digest) error {
-	// [TODO] We can use artifact type in the link path to support filtering by artifact type
-	//  but need to consider the max path length in different os
 	subjectRevision := dm.Reference.Digest
 
 	rootPath := path.Join(referrersLinkPath(ms.repository.Named().Name()), subjectRevision.Algorithm().String(), subjectRevision.Hex())
