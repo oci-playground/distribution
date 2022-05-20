@@ -55,9 +55,9 @@ func (a Manifest) References() []distribution.Descriptor {
 // Subject returns the the subject manifest this artifact references.
 func (a Manifest) Subject() distribution.Descriptor {
 	return distribution.Descriptor{
-		MediaType: a.inner.Reference.MediaType,
-		Digest:    a.inner.Reference.Digest,
-		Size:      a.inner.Reference.Size,
+		MediaType: a.inner.Refers.MediaType,
+		Digest:    a.inner.Refers.Digest,
+		Size:      a.inner.Refers.Size,
 	}
 }
 

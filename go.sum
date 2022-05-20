@@ -131,8 +131,8 @@ github.com/modern-go/reflect2 v1.0.1/go.mod h1:bx2lNnkwVCuqBIxFjflWJWanXIb3Rllmb
 github.com/mwitkow/go-conntrack v0.0.0-20161129095857-cc309e4a2223/go.mod h1:qRWi+5nqEBWmkhHvq77mSJWrCKwh8bxhgT7d/eI7P4U=
 github.com/ncw/swift v1.0.47 h1:4DQRPj35Y41WogBxyhOXlrI37nzGlyEcsforeudyYPQ=
 github.com/ncw/swift v1.0.47/go.mod h1:23YIA4yWVnGwv2dQlN4bB7egfYX6YLn0Yo/S6zZO/ZM=
-github.com/oci-playground/artifact-spec v0.0.0-20220506233500-8fed0a29d06f h1:Dak7aFfhhP+sXD7+1OcRU31haFdKmKasKBSuJJGJEUo=
-github.com/oci-playground/artifact-spec v0.0.0-20220506233500-8fed0a29d06f/go.mod h1:NY7llZsIsyNV25K6rnp/j1/Fid+pVPxhhtO/HKCBPhk=
+github.com/oci-playground/artifact-spec v0.0.0-20220520225409-eb1cd572d3de h1:mgXoVxyqNZRuut2YU5ezH/2H9fnk/K3KC+kHW9gXiys=
+github.com/oci-playground/artifact-spec v0.0.0-20220520225409-eb1cd572d3de/go.mod h1:NY7llZsIsyNV25K6rnp/j1/Fid+pVPxhhtO/HKCBPhk=
 github.com/oci-playground/image-spec v1.0.3-0.20220502203203-687ae397e329 h1:Q4QvrRunDbmQBLH28Bi4SqhtCmwj2tfDivUQuX36xQA=
 github.com/oci-playground/image-spec v1.0.3-0.20220502203203-687ae397e329/go.mod h1:K/JAU0m27RFhDRX4PcFdIKntROP6y5Ed6O91aZYDQfs=
 github.com/oklog/ulid v1.3.1/go.mod h1:CirwcVhetQ6Lv90oh/F+FBtV6XMibvdAFo93nm5qn4U=

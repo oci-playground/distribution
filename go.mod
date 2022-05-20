@@ -32,7 +32,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 )
 
-require github.com/oci-playground/artifact-spec v0.0.0-20220506233500-8fed0a29d06f
+require github.com/oci-playground/artifact-spec v0.0.0-20220520225409-eb1cd572d3de
 
 require (
 	cloud.google.com/go v0.34.0 // indirect
