@@ -1,0 +1,13 @@
+version: 0.1
+log:
+  fields:
+    service: registry
+storage:
+  cache:
+    blobdescriptor: inmemory
+  filesystem:
+    rootdirectory: /tmp/registry-root-dir
+http:
+  addr: 127.0.0.1:5000
+  headers:
+    X-Content-Type-Options: [nosniff]

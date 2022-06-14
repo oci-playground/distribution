@@ -1,3 +1,19 @@
+# OCI Playground
+
+[View diff](https://github.com/distribution/distribution/compare/main...oci-playground:f)
+
+To build:
+
+```
+make
+```
+
+To run:
+
+```
+./bin/registry serve cmd/registry/config-f.yml
+```
+
 # Distribution
 
 The toolset to pack, ship, store, and deliver content.
