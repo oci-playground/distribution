@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/url"
 	"path"
-	"reflect"
 
 	"github.com/distribution/distribution/v3"
 	dcontext "github.com/distribution/distribution/v3/context"
@@ -15,7 +14,7 @@ import (
 	v1 "github.com/opencontainers/image-spec/specs-go/v1"
 )
 
-//ocischemaManifestHandler is a ManifestHandler that covers ocischema manifests.
+// ocischemaManifestHandler is a ManifestHandler that covers ocischema manifests.
 type ocischemaManifestHandler struct {
 	repository    distribution.Repository
 	blobStore     distribution.BlobStore
@@ -60,7 +59,7 @@ func (ms *ocischemaManifestHandler) Put(ctx context.Context, manifest distributi
 		return "", err
 	}
 
-	if !reflect.DeepEqual(m.Reference, distribution.Descriptor{}) {
+	if m.Subject != nil {
 		// add link file here if Reference field isn't empty
 		err = ms.indexReferrers(ctx, m, revision.Digest)
 		if err != nil {
@@ -157,7 +156,7 @@ func (ms *ocischemaManifestHandler) verifyManifest(ctx context.Context, mnfst oc
 
 // indexReferrers indexes the subject of the given revision in its referrers index store.
 func (ms *ocischemaManifestHandler) indexReferrers(ctx context.Context, dm *ocischema.DeserializedManifest, revision digest.Digest) error {
-	subjectRevision := dm.Reference.Digest
+	subjectRevision := dm.Subject.Digest
 
 	rootPath := path.Join(referrersLinkPath(ms.repository.Named().Name()), subjectRevision.Algorithm().String(), subjectRevision.Hex())
 	referenceLinkPath := path.Join(rootPath, revision.Algorithm().String(), revision.Hex(), "link")

@@ -45,10 +45,13 @@ func (h *referrersHandler) Referrers(ctx context.Context, revision digest.Digest
 			return err
 		}
 		// need to handle artifact manifest and oci manifest
+		var artifactType string
 		var annotations map[string]string
 		if m, ok := man.(*DeserializedManifest); ok {
+			artifactType = m.inner.ArtifactType
 			annotations = m.inner.Annotations
 		} else if m, ok := man.(*ocischema.DeserializedManifest); ok {
+			artifactType = m.Config.MediaType
 			annotations = m.Annotations
 		} else {
 			return nil
@@ -60,10 +63,11 @@ func (h *referrersHandler) Referrers(ctx context.Context, revision digest.Digest
 		}
 		desc.MediaType, _, _ = man.Payload()
 		referrers = append(referrers, v1.Descriptor{
-			MediaType:   desc.MediaType,
-			Size:        desc.Size,
-			Digest:      desc.Digest,
-			Annotations: annotations,
+			MediaType:    desc.MediaType,
+			Size:         desc.Size,
+			Digest:       desc.Digest,
+			ArtifactType: artifactType,
+			Annotations:  annotations,
 		})
 		return nil
 	})

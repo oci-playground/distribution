@@ -51,11 +51,11 @@ type Manifest struct {
 	// configuration.
 	Layers []distribution.Descriptor `json:"layers"`
 
+	// Subject is an optional link from the image manifest to another manifest forming an association between the image manifest and the other manifest.
+	Subject *distribution.Descriptor `json:"subject,omitempty"`
+
 	// Annotations contains arbitrary metadata for the image manifest.
 	Annotations map[string]string `json:"annotations,omitempty"`
-
-	// Reference links a manifest to another existing manifest.
-	Reference distribution.Descriptor `json:"refers,omitempty"`
 }
 
 // References returns the descriptors of this manifests references.

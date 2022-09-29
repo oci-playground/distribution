@@ -47,6 +47,7 @@ func (h *referrersHandler) getReferrers(w http.ResponseWriter, r *http.Request) 
 		Versioned: specs.Versioned{
 			SchemaVersion: 2,
 		},
+		MediaType:   v1.MediaTypeImageIndex,
 		Manifests:   referrers,
 		Annotations: map[string]string{},
 	}
