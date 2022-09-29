@@ -18,7 +18,7 @@ require (
 	github.com/mitchellh/mapstructure v1.1.2
 	github.com/ncw/swift v1.0.47
 	github.com/opencontainers/go-digest v1.0.0
-	github.com/opencontainers/image-spec v1.0.2
+	github.com/opencontainers/image-spec v0.0.0-20220924131615-7fb40e878140
 	github.com/prometheus/client_golang v1.12.1 // indirect; updated to latest
 	github.com/sirupsen/logrus v1.8.1
 	github.com/spf13/cobra v1.0.0
@@ -30,8 +30,6 @@ require (
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15
 	gopkg.in/yaml.v2 v2.4.0
 )
-
-require github.com/oci-playground/artifact-spec v0.0.0-20220520225409-eb1cd572d3de
 
 require (
 	cloud.google.com/go v0.65.0 // indirect
@@ -75,5 +73,3 @@ require (
 	google.golang.org/grpc v1.31.0 // indirect
 	google.golang.org/protobuf v1.26.0 // indirect
 )
-
-replace github.com/opencontainers/image-spec => github.com/oci-playground/image-spec v1.0.3-0.20220524171020-1a83d467956c
