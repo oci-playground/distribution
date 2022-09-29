@@ -6,8 +6,8 @@ import (
 	"fmt"
 
 	"github.com/distribution/distribution/v3"
-	v2 "github.com/oci-playground/artifact-spec/specs-go/v1"
 	"github.com/opencontainers/go-digest"
+	v1 "github.com/opencontainers/image-spec/specs-go/v1"
 )
 
 func init() {
@@ -19,9 +19,9 @@ func init() {
 		}
 
 		dgst := digest.FromBytes(b)
-		return d, distribution.Descriptor{Digest: dgst, Size: int64(len(b)), MediaType: v2.MediaTypeArtifactManifest}, err
+		return d, distribution.Descriptor{Digest: dgst, Size: int64(len(b)), MediaType: v1.MediaTypeArtifactManifest}, err
 	}
-	err := distribution.RegisterManifestSchema(v2.MediaTypeArtifactManifest, unmarshalFunc)
+	err := distribution.RegisterManifestSchema(v1.MediaTypeArtifactManifest, unmarshalFunc)
 	if err != nil {
 		panic(fmt.Sprintf("Unable to register ORAS artifact manifest: %s", err))
 	}
@@ -29,7 +29,7 @@ func init() {
 
 // Manifest describes ORAS artifact manifests.
 type Manifest struct {
-	inner v2.ArtifactManifest
+	inner v1.Artifact
 }
 
 // ArtifactType returns the artifactType of this ORAS artifact.
@@ -55,9 +55,9 @@ func (a Manifest) References() []distribution.Descriptor {
 // Subject returns the the subject manifest this artifact references.
 func (a Manifest) Subject() distribution.Descriptor {
 	return distribution.Descriptor{
-		MediaType: a.inner.Refers.MediaType,
-		Digest:    a.inner.Refers.Digest,
-		Size:      a.inner.Refers.Size,
+		MediaType: a.inner.Subject.MediaType,
+		Digest:    a.inner.Subject.Digest,
+		Size:      a.inner.Subject.Size,
 	}
 }
 
@@ -74,7 +74,7 @@ func (d *DeserializedManifest) UnmarshalJSON(b []byte) error {
 	d.raw = make([]byte, len(b))
 	copy(d.raw, b)
 
-	var man v2.ArtifactManifest
+	var man v1.Artifact
 	if err := json.Unmarshal(d.raw, &man); err != nil {
 		return err
 	}
@@ -102,5 +102,5 @@ func (d *DeserializedManifest) MarshalJSON() ([]byte, error) {
 // used to calculate the content identifier.
 func (d DeserializedManifest) Payload() (string, []byte, error) {
 	// NOTE: This is a hack. The media type should be read from storage.
-	return v2.MediaTypeArtifactManifest, d.raw, nil
+	return v1.MediaTypeArtifactManifest, d.raw, nil
 }
