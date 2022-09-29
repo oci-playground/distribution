@@ -197,8 +197,7 @@ func (o *ociNamespace) referrersDispatcher(extCtx *extension.Context, r *http.Re
 		storageDriver: o.storageDriver,
 		extContext:    extCtx,
 	}
-	q := r.URL.Query()
-	if dgstStr := q.Get("digest"); dgstStr == "" {
+	if dgstStr := dcontext.GetStringValue(extCtx, "vars.digest"); dgstStr == "" {
 		dcontext.GetLogger(extCtx).Errorf("digest not available")
 	} else if d, err := digest.Parse(dgstStr); err != nil {
 		dcontext.GetLogger(extCtx).Errorf("error parsing digest=%q: %v", dgstStr, err)

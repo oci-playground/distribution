@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/distribution/distribution/v3/reference"
+	"github.com/opencontainers/go-digest"
 )
 
 // ExtendRoute extends the routes using the template.
@@ -21,7 +22,12 @@ func ExtendRoute(ns, ext, component string, template RouteDescriptor, nameRequir
 		path += "{name:" + reference.NameRegexp.String() + "}/"
 	}
 	name = fmt.Sprintf("%s-%s-%s-%s", name, ns, ext, component)
-	path = fmt.Sprintf("%s_%s/%s/%s", path, ns, ext, component)
+	// hack the route
+	if ns == "oci" && ext == "artifacts" && component == "referrers" {
+		path = path + "referrers/{digest:" + digest.DigestRegexp.String() + "}"
+	} else {
+		path = fmt.Sprintf("%s_%s/%s/%s", path, ns, ext, component)
+	}
 
 	desc := template
 	desc.Name = name
