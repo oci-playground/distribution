@@ -1,4 +1,4 @@
-// Copyright 2016 The Linux Foundation
+// Copyright 2022 The Linux Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,19 +14,20 @@
 
 package v1
 
-import v1 "github.com/opencontainers/image-spec/specs-go/v1"
-
 // Artifact describes an artifact manifest.
 // This structure provides `application/vnd.oci.artifact.manifest.v1+json` mediatype when marshalled to JSON.
-type ArtifactManifest struct {
+type Artifact struct {
 	// MediaType is the media type of the object this schema refers to.
 	MediaType string `json:"mediaType"`
 
-	// Blobs is a collection of blobs referenced by this manifest.
-	Blobs []v1.Descriptor `json:"blobs,omitempty"`
+	// ArtifactType is the IANA media type of the artifact this schema refers to.
+	ArtifactType string `json:"artifactType"`
 
-	// Refers is an optional link to any existing manifest within the repository.
-	Refers v1.Descriptor `json:"refers,omitempty"`
+	// Blobs is a collection of blobs referenced by this manifest.
+	Blobs []Descriptor `json:"blobs,omitempty"`
+
+	// Subject (reference) is an optional link from the artifact to another manifest forming an association between the artifact and the other manifest.
+	Subject *Descriptor `json:"subject,omitempty"`
 
 	// Annotations contains arbitrary metadata for the artifact manifest.
 	Annotations map[string]string `json:"annotations,omitempty"`

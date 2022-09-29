@@ -174,14 +174,11 @@ github.com/mitchellh/mapstructure
 ## explicit
 github.com/ncw/swift
 github.com/ncw/swift/swifttest
-# github.com/oci-playground/artifact-spec v0.0.0-20220520225409-eb1cd572d3de
-## explicit; go 1.17
-github.com/oci-playground/artifact-spec/specs-go/v1
 # github.com/opencontainers/go-digest v1.0.0
 ## explicit; go 1.13
 github.com/opencontainers/go-digest
-# github.com/opencontainers/image-spec v1.0.2 => github.com/oci-playground/image-spec v1.0.3-0.20220524171020-1a83d467956c
-## explicit; go 1.16
+# github.com/opencontainers/image-spec v0.0.0-20220924131615-7fb40e878140
+## explicit; go 1.17
 github.com/opencontainers/image-spec/specs-go
 github.com/opencontainers/image-spec/specs-go/v1
 # github.com/prometheus/client_golang v1.12.1
@@ -391,4 +388,3 @@ gopkg.in/check.v1
 # gopkg.in/yaml.v2 v2.4.0
 ## explicit; go 1.15
 gopkg.in/yaml.v2
-# github.com/opencontainers/image-spec => github.com/oci-playground/image-spec v1.0.3-0.20220524171020-1a83d467956c
