@@ -100,12 +100,13 @@ func (amh *artifactManifestHandler) verifyManifest(ctx context.Context, dm Deser
 		}
 
 		// Validate subject manifest.
-		subject := dm.Subject()
-		exists, err := ms.Exists(ctx, subject.Digest)
-		if !exists || err == distribution.ErrBlobUnknown {
-			errs = append(errs, distribution.ErrManifestBlobUnknown{Digest: subject.Digest})
-		} else if err != nil {
-			errs = append(errs, err)
+		if subject := dm.Subject(); subject != nil {
+			exists, err := ms.Exists(ctx, subject.Digest)
+			if !exists || err == distribution.ErrBlobUnknown {
+				errs = append(errs, distribution.ErrManifestBlobUnknown{Digest: subject.Digest})
+			} else if err != nil {
+				errs = append(errs, err)
+			}
 		}
 	}
 
@@ -121,7 +122,11 @@ func (amh *artifactManifestHandler) indexReferrers(ctx context.Context, dm Deser
 	// [TODO] We can use artifact type in the link path to support filtering by artifact type
 	//  but need to consider the max path length in different os
 	//artifactType := dm.ArtifactType()
-	subjectRevision := dm.Subject().Digest
+	subject := dm.Subject()
+	if subject == nil {
+		return nil
+	}
+	subjectRevision := subject.Digest
 
 	rootPath := path.Join(referrersLinkPath(amh.repository.Named().Name()), subjectRevision.Algorithm().String(), subjectRevision.Hex())
 	referenceLinkPath := path.Join(rootPath, revision.Algorithm().String(), revision.Hex(), "link")
