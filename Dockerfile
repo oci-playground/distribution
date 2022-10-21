@@ -52,6 +52,7 @@ COPY --from=releaser /out /
 
 FROM alpine:${ALPINE_VERSION}
 RUN apk add --no-cache ca-certificates
+# Light up the oci referrers API - 
 COPY cmd/registry/config-example-with-extensions.yml /etc/docker/registry/config.yml
 COPY --from=binary /registry /bin/registry
 VOLUME ["/var/lib/registry"]

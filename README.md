@@ -27,8 +27,6 @@ http -b :5000/v2/reftype-test/_distribution/registry/manifests
 }
 ```
 
-- [reftype](https://github.com/sajayantony/reftype) is a test client that can be used to push the new oci reference type manifest. 
-
 # Distribution
 
 The toolset to pack, ship, store, and deliver content.
